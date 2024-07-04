@@ -1,0 +1,34 @@
+// Function to display link and answer
+export function display_answer_url(answer, link = '') {
+    const chatWindow = document.getElementById('display');
+    const botMessageDiv = document.createElement('div');
+    botMessageDiv.classList.add('message', 'bot-message');
+    let messageContent = `<strong>Bot:</strong><br>`;
+    botMessageDiv.innerHTML = messageContent;
+    chatWindow.prepend(botMessageDiv);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    const words = answer.split(' ');
+    let index = 0;
+
+2        if (index < words.length) {
+            messageContent += words[index] + ' ';
+            botMessageDiv.innerHTML = messageContent;
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            index++;
+            setTimeout(addWord, 100); // Adjust the interval as needed
+        } else if (link) {
+            messageContent += `<br><a href="${link}" target="_blank">Read more</a><br><button class="relevant-button">Relevant</button>`;
+            botMessageDiv.innerHTML = messageContent;
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            const relevantButton = botMessageDiv.querySelector('.relevant-button');
+            if (relevantButton) {
+                relevantButton.addEventListener('click', () => sendRelevantDataToExtension(query, answer, link));
+                relevantButton.addEventListener('click', (event) => showPopupMessage(event, 'Thank you for your feedback!'));
+            }
+        }
+    }
+
+    addWord();
+}
